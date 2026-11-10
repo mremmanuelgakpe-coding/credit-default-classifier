@@ -1,0 +1,14 @@
+# Données brutes (CC0, téléchargeables sur Kaggle : non versionnées pour garder le dépôt léger) et secrets
+data/raw/*
+!data/raw/.gitkeep
+.env
+# Python
+__pycache__/
+*.pyc
+.venv/
+.venv-demo/
+venv/
+.pytest_cache/
+# Artefacts lourds : décommenter si vous ne voulez pas versionner le modèle
+# models/*.joblib
+.DS_Store

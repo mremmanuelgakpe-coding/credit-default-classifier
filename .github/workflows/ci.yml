@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Droits minimaux : la CI lit le code, elle n'écrit rien.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: Tests (pytest)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Installer les dépendances
+        run: pip install -r requirements.txt
+      - name: Lancer les tests
+        run: python -m pytest -q
+
+  docker:
+    name: Image Docker de l'API
+    needs: tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Construire l'image
+        run: docker build -t credit-default-api:ci .
+      - name: Démarrer le conteneur (mêmes protections qu'en production)
+        run: |
+          docker run -d --name api -p 8000:8000 \
+            -e API_KEY=ci-test-key-not-a-secret \
+            --read-only --tmpfs /tmp --cap-drop ALL --security-opt no-new-privileges \
+            credit-default-api:ci
+          for i in $(seq 1 30); do
+            curl -fs http://localhost:8000/health && break
+            sleep 2
+          done
+      - name: Vérifier l'API
+        run: |
+          set -e
+          BODY='{"person_age":29,"person_income":24000,"person_home_ownership":"RENT","person_emp_length":1,"loan_intent":"MEDICAL","loan_grade":"C","loan_amnt":9000,"loan_int_rate":14.5,"loan_percent_income":0.38,"cb_person_default_on_file":"Y","cb_person_cred_hist_length":3}'
+          # sans clé : refus attendu
+          test "$(curl -s -o /dev/null -w '%{http_code}' -X POST localhost:8000/predict -H 'Content-Type: application/json' -d "$BODY")" = "401"
+          # avec clé : score + motifs
+          curl -fs -X POST localhost:8000/predict -H 'X-API-Key: ci-test-key-not-a-secret' \
+            -H 'Content-Type: application/json' -d "$BODY" | tee out.json
+          python3 -c "import json; d=json.load(open('out.json')); assert 0 <= d['probability_default'] <= 1 and d['explanation']['risk_factors']"
+          # conteneur non-root
+          test "$(docker exec api id -u)" != "0"
+      - name: Journaux du conteneur en cas d'échec
+        if: failure()
+        run: docker logs api

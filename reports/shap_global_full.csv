@@ -1,0 +1,12 @@
+,mean_abs_shap
+person_income,1.0063
+loan_percent_income,0.9202
+person_home_ownership,0.8829
+loan_intent,0.6446
+loan_grade,0.6271
+loan_int_rate,0.5415
+loan_amnt,0.2625
+person_emp_length,0.1684
+person_age,0.1334
+cb_person_cred_hist_length,0.0566
+cb_person_default_on_file,0.034

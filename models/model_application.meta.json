@@ -1,0 +1,56 @@
+{
+  "project": "credit-default-classifier",
+  "code_version": "1.0.0",
+  "trained_at": "2026-11-02T12:12:27+00:00",
+  "feature_set": "application",
+  "numeric_features": [
+    "person_age",
+    "person_income",
+    "person_emp_length",
+    "loan_amnt",
+    "loan_percent_income",
+    "cb_person_cred_hist_length"
+  ],
+  "categorical_features": [
+    "person_home_ownership",
+    "loan_intent",
+    "cb_person_default_on_file"
+  ],
+  "categories": {
+    "person_home_ownership": [
+      "MORTGAGE",
+      "OTHER",
+      "OWN",
+      "RENT"
+    ],
+    "loan_intent": [
+      "DEBTCONSOLIDATION",
+      "EDUCATION",
+      "HOMEIMPROVEMENT",
+      "MEDICAL",
+      "PERSONAL",
+      "VENTURE"
+    ],
+    "cb_person_default_on_file": [
+      "N",
+      "Y"
+    ]
+  },
+  "model": "lightgbm",
+  "threshold": 0.16,
+  "costs": {
+    "false_negative": 5.0,
+    "false_positive": 1.0
+  },
+  "data_sha256": "ce3c6d2167717bf1627d1c0c81cbccd28323cd4aa7b96d542599366d5ff6aac8",
+  "model_sha256": "a70d5afd8114bcd54740ddbe4c9239add35ccd9b06ed421dd98c0685de76b5d1",
+  "n_train": 25928,
+  "n_test": 6483,
+  "test_metrics": {
+    "roc_auc": 0.9076,
+    "gini": 0.8151,
+    "ks": 0.6553,
+    "pr_auc": 0.8273,
+    "brier": 0.0798
+  }
+}

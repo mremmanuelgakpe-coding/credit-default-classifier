@@ -1,0 +1,12 @@
+feature,importance,std
+person_income,0.0971,0.0017
+person_home_ownership,0.0888,0.0048
+loan_percent_income,0.0761,0.0015
+loan_intent,0.0437,0.0028
+loan_grade,0.0418,0.002
+loan_int_rate,0.0169,0.0008
+person_age,0.0087,0.0007
+loan_amnt,0.0081,0.0003
+person_emp_length,0.0062,0.0007
+cb_person_cred_hist_length,0.0007,0.0002
+cb_person_default_on_file,0.0002,0.0003

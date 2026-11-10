@@ -1,0 +1,11 @@
+# Dépendances minimales de l'image de production (mêmes versions que l'entraînement :
+# un modèle sérialisé doit être rechargé avec la même version de scikit-learn/LightGBM).
+numpy==2.5.3
+pandas==3.0.5
+scikit-learn==1.9.1
+xgboost==3.4.1
+lightgbm==4.7.0
+joblib==1.6.0
+fastapi==0.162.0
+pydantic==2.13.5
+uvicorn==0.54.0
