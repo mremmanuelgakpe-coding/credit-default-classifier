@@ -197,7 +197,7 @@ make docker-build && make docker-run
 
 La démo (`demo/app.py`) charge directement le modèle, sans passer par l'API : aucune clé n'est exposée publiquement et aucune donnée saisie n'est enregistrée. L'empreinte du modèle est vérifiée au chargement, comme dans l'API.
 
-Mise en ligne gratuite sur [Streamlit Community Cloud](https://share.streamlit.io) : 
+Mise en ligne gratuite sur [Streamlit Community Cloud](https://share.streamlit.io) : https://credit-default-classifier-mreg.streamlit.app
 1. Pousser le projet sur GitHub (dépôt public). Les fichiers `models/*.joblib` et `reports/` doivent être versionnés ; les données brutes restent exclues.
 2. Sur share.streamlit.io : *Create app* → choisir le dépôt, la branche `main` et le fichier `demo/app.py`.
 3. Dans *Advanced settings*, choisir **Python 3.12**. Les dépendances sont lues dans `demo/requirements.txt`.
